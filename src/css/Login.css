@@ -1,0 +1,119 @@
+/* Full screen background */
+.login-screen {
+  height: 100vh; /* full screen height */
+  width: 100vw;  /* full screen width */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeInBg 1s ease;
+}
+
+/* Fade-in background */
+@keyframes fadeInBg {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Container that holds the form */
+.login-container {
+  width: 400px;
+  max-width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Form box styling */
+.login-form {
+  background: white;
+  padding: 80px 80px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  width: 100%;
+  text-align: center;
+  animation: slideUp 0.8s ease forwards;
+  opacity: 0;
+}
+
+/* Slide-up animation for form */
+@keyframes slideUp {
+  0% { transform: translateY(50px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.login-form .title {
+  margin-bottom: 25px;
+  color: #333;
+  font-size: 24px;
+}
+
+/* Input styling */
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #6a11cb;
+  box-shadow: 0 0 8px rgba(106,17,203,0.2);
+}
+
+/* Button */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #6a11cb;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+  background: #2575fc;
+}
+
+/* Links */
+.links {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.links a {
+  color: #6a11cb;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.links a:hover {
+  color: #2575fc;
+}
+
+/* Sign-up text */
+.signup-text {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.signup-text a {
+  color: #6a11cb;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signup-text a:hover {
+  color: #2575fc;
+}

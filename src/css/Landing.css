@@ -1,0 +1,189 @@
+/* Full screen background */
+.landing-screen {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #76ed7a, #420ba1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+}
+
+/* Container with text + image side by side */
+.landing-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  max-width: 1200px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  animation: fadeInContainer 1s ease;
+}
+
+/* Container fade-in animation */
+@keyframes fadeInContainer {
+  0% { opacity: 0; transform: translateY(50px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Text section */
+.landing-text {
+  flex: 1;
+  color: white;
+  padding-right: 30px;
+  animation: slideText 1s ease forwards;
+  opacity: 0;
+}
+
+@keyframes slideText {
+  0% { opacity: 0; transform: translateX(-50px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Title */
+.landing-title {
+  font-size: 64px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-shadow: 2px 2px 15px rgba(0,0,0,0.3);
+}
+
+/* Subtitle */
+.landing-desc {
+  font-size: 24px;
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 8px rgba(0,0,0,0.2);
+}
+
+
+
+.landing-btn {
+  padding: 14px 40px;
+  border-radius: 10px;
+  font-size: 18px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.landing-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+
+
+.landing-btn.login-btn:hover {
+  background: #2575fc;
+}
+
+
+
+.landing-btn.signup-btn:hover {
+  background: #6a11cb;
+}
+
+/* Image section */
+.landing-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  animation: slideImage 1s ease forwards;
+  opacity: 0;
+}
+
+.landing-image img {
+  width: 400px;
+  max-width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* Image animation */
+@keyframes slideImage {
+  0% { opacity: 0; transform: translateX(50px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Responsive for mobile */
+@media (max-width: 900px) {
+  .landing-container {
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: center;
+    padding: 30px 20px;
+  }
+
+  .landing-text {
+    padding: 0;
+    margin-top: 20px;
+  }
+
+  .landing-image img {
+    width: 80%;
+    max-width: 300px;
+  }
+}
+/* Buttons container */
+.landing-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start; /* desktop */
+  flex-wrap: wrap;
+}
+
+/* Common button style */
+.landing-btn {
+  flex: 1; /* makes all buttons same width */
+  min-width: 150px; /* minimum width */
+  padding: 14px 0; /* vertical padding only */
+  border-radius: 12px;
+  font-size: 18px;
+  text-decoration: none;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+  display: inline-block;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Hover effect */
+.landing-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* Login button */
+.landing-btn.login-btn {
+  background: #6a11cb;
+  color: white;
+}
+
+/* Hover color for login */
+.landing-btn.login-btn:hover {
+  background: #2575fc;
+}
+
+/* Signup button */
+.landing-btn.signup-btn {
+  background: #2575fc;
+  color: white;
+}
+
+/* Hover color for signup */
+.landing-btn.signup-btn:hover {
+  background: #6a11cb;
+}
+
+/* Responsive: mobile */
+@media (max-width: 900px) {
+  .landing-buttons {
+    flex-direction: column;
+    gap: 15px;
+    justify-content: center;
+  }
+}
