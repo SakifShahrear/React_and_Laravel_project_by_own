@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../css/Landing.css";
-import keepnotePhoto from "../assets/keepnotephoto.jpg"; // আপনার ছবি path
+import keepnotePhoto from "../assets/keepnotephoto.jpg"; 
 
 function Landing() {
   return (

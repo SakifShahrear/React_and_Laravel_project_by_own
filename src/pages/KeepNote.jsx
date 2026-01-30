@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import api from "../api";
 import "../css/KeepNote.css";
 
 function KeepNote() {
@@ -11,55 +12,44 @@ function KeepNote() {
 
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
-  const [image, setImage] = useState(null);
 
-  const currentDate = new Date().toLocaleDateString();
-  const currentTime = new Date().toLocaleTimeString();
+  const currentDate = new Date().toISOString().split('T')[0];
+  const currentTime = new Date().toLocaleTimeString('en-US', { 
+    hour12: false, hour: '2-digit', minute: '2-digit' 
+  });
 
   // Load edit data
   useEffect(() => {
     if (editData) {
       setTitle(editData.title);
       setText(editData.text);
-      setImage(editData.image);
     }
   }, [editData]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
 
     if (!title || !text) {
       alert("Title and Note required!");
       return;
     }
 
-    let notes = JSON.parse(localStorage.getItem("notes")) || [];
-
-    if (editData) {
-
-      // UPDATE MODE
-      notes[editData.index] = {
-        title,
-        text,
-        image,
-        date: currentDate,
-        time: currentTime
-      };
-
-    } else {
-
-      // CREATE MODE
-      notes.push({
-        title,
-        text,
-        image,
-        date: currentDate,
-        time: currentTime
-      });
+    try {
+      if (editData) {
+        // UPDATE
+        await api.put(`/notes/${editData.id}`, {
+          title, text, date: currentDate, time: currentTime
+        });
+      } else {
+        // CREATE
+        await api.post('/notes', {
+          title, text, date: currentDate, time: currentTime
+        });
+      }
+      navigate("/profile");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to save note");
     }
-
-    localStorage.setItem("notes", JSON.stringify(notes));
-
-    navigate("/profile");
   };
 
   return (
@@ -87,16 +77,6 @@ function KeepNote() {
           value={text}
           onChange={(e) => setText(e.target.value)}
         ></textarea>
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) =>
-            setImage(URL.createObjectURL(e.target.files[0]))
-          }
-        />
-
-        {image && <img src={image} className="preview-img" alt="preview" />}
 
         <button className="save-btn" onClick={handleSave}>
           {editData ? "Update Note" : "Save Note"}

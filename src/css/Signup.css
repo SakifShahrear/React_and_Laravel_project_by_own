@@ -23,6 +23,9 @@
   box-shadow: 0 15px 35px rgba(0,0,0,0.25);
   animation: slideUp 0.8s ease forwards;
   opacity: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* space between inputs */
 }
 
 @keyframes slideUp {
@@ -39,26 +42,27 @@
 /* Title */
 .signup-title {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   font-size: 26px;
   color: #333;
 }
 
 /* Inputs */
-.input-group {
-  margin-bottom: 15px;
-}
-
-.input-group input {
+.signup-form input[type="text"],
+.signup-form input[type="email"],
+.signup-form input[type="tel"],
+.signup-form input[type="password"],
+.signup-form input[type="file"] {
   width: 100%;
   padding: 12px 14px;
   border-radius: 8px;
   border: 1px solid #ddd;
   outline: none;
   transition: 0.3s;
+  font-size: 14px;
 }
 
-.input-group input:focus {
+.signup-form input:focus {
   border-color: #6a11cb;
   box-shadow: 0 0 8px rgba(106,17,203,0.2);
 }
