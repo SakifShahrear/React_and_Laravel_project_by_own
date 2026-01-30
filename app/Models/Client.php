@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
 
 class Client extends Authenticatable
 {
@@ -22,4 +22,16 @@ class Client extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    protected $appends = [
+        'image_url'
+    ];
+
+    /**
+     * Get the image URL attribute
+     */
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? url('storage/' . $this->image) : null;
+    }
 }
