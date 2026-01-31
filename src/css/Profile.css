@@ -36,6 +36,30 @@ body,
   align-items: center;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
   animation: slideDown 0.7s ease;
+  position: relative;
+}
+
+/* LOGOUT BUTTON */
+.logout-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #ff5c5c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(255, 92, 92, 0.3);
+}
+
+.logout-btn:hover {
+  background: #e04444;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(255, 92, 92, 0.4);
 }
 
 /* LEFT INFO */

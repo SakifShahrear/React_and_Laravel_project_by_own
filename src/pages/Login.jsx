@@ -1,60 +1,78 @@
+// Import necessary hooks and utilities
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../api";
 import "../css/Login.css";
 
-function Login() {
+export default function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  // State for form inputs
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  // Handle login form submission
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // এখানে authentication logic আসবে
-    console.log("Email:", email, "Password:", password);
-    navigate("/profile"); // login successful -> profile
+    
+    try {
+      const response = await auth.login(form.email, form.password);
+      console.log('Login success:', response.data);
+      
+      // Save the tokens
+      localStorage.setItem('access_token', response.data.access_token);
+      localStorage.setItem('refresh_token', response.data.refresh_token);
+      
+      alert('Login Successful!');
+      
+      // Navigate to profile
+      navigate('/profile');
+      
+    } catch (error) {
+      console.error('Login failed:', error.response?.data);
+      alert(error.response?.data?.message || 'Login failed');
+    }
   };
-
   return (
     <div className="login-screen">
       <div className="login-container">
         <form className="login-form" onSubmit={handleLogin}>
-          <h2 className="title">MUST <br />Have to Login</h2>
+          <h2 className="title">Must <br />You Have to Log In</h2>
 
+          {/* Email input */}
           <div className="input-group">
             <input
               type="email"
               placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
               required
             />
           </div>
 
+          {/* Password input */}
           <div className="input-group">
             <input
               type="password"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
               required
             />
           </div>
 
-          <div className="links">
-            <Link to="/forgot">Forgot Password?</Link>
+          {/* Submit button */}
+          <button className="login-btn">Login</button>
+
+          {/* Sign up link */}
+          <div className="signup-text">
+            Don't have an account? <a href="/signup">Sign Up</a>
           </div>
-
-          <button type="submit" className="login-btn">
-            Login
-          </button>
-
-          <p className="signup-text">
-            Don't have an account? <Link to="/signup">Sign Up</Link>
-          </p>
         </form>
       </div>
     </div>
   );
 }
 
-export default Login;

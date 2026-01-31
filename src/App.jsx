@@ -1,22 +1,43 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
+import KeepNote from "./pages/KeepNote";
 import Landing from "./pages/landing";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
-import KeepNote from "./pages/KeepNote";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
+
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/keepnote" element={<KeepNote />} />
+
+        {/* Landing page - Default first page / ল্যান্ডিং পেজ - প্রথম পেজ */}
+        <Route path="/" element={<Landing/>} />
+
+        {/* Login page / লগইন পেজ */}
+        <Route path="/login" element={<Login/>} />
+
+        {/* Signup page / সাইন আপ পেজ */}
+        <Route path="/signup" element={<Signup/>} />
+
+        {/* Profile page - Protected / প্রোফাইল পেজ - সুরক্ষিত */}
+        <Route path="/profile" element={
+          <PrivateRoute>
+            <Profile/>
+          </PrivateRoute>
+        } />
+
+        {/* KeepNote page - Protected / কিপনোট পেজ - সুরক্ষিত */}
+        <Route path="/keepnote" element={
+          <PrivateRoute>
+            <KeepNote/>
+          </PrivateRoute>
+        } />
+
       </Routes>
-    </Router>
+
+    </BrowserRouter>
   );
 }
 
