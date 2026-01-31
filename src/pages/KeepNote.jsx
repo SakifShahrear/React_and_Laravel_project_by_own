@@ -36,18 +36,20 @@ function KeepNote() {
     try {
       if (editData) {
         // UPDATE
-        await api.put(`/notes/${editData.id}`, {
+        await api.put(`/api/notes/${editData.id}`, {
           title, text, date: currentDate, time: currentTime
         });
+        alert("Note updated successfully!");
       } else {
         // CREATE
-        await api.post('/notes', {
+        await api.post('/api/notes', {
           title, text, date: currentDate, time: currentTime
         });
+        alert("Note created successfully!");
       }
       navigate("/profile");
     } catch (error) {
-      console.error(error);
+      console.error('Save note error:', error.response?.data || error.message);
       alert("Failed to save note");
     }
   };

@@ -10,6 +10,11 @@ export default defineConfig({
         target: 'http://localhost/KeepNote/public',
         changeOrigin: true,
         secure: false,
+      },
+      '/sanctum': {
+        target: 'http://localhost/KeepNote/public',
+        changeOrigin: true,
+        secure: false,
       }
     }
   }

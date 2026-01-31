@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signupUser } from "../api"; // এইটা তোমার api.js এ define করতে হবে
+import { auth } from "../api";
 import "../css/Signup.css";
 
 function Signup() {
@@ -12,7 +12,7 @@ function Signup() {
     phone: "",
     occupation: "",
     password: "",
-    confirmPassword: "",
+    password_confirmation: "",  // ⚠️ Exact name for Laravel!
     image: null
   });
 
@@ -34,7 +34,7 @@ function Signup() {
     }
 
     // Password match validation
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.password_confirmation) {
       alert("Password does not match!");
       return;
     }
@@ -47,24 +47,29 @@ function Signup() {
       data.append("phone", formData.phone);
       data.append("occupation", formData.occupation);
       data.append("password", formData.password);
+      data.append("password_confirmation", formData.password_confirmation); // Required by Laravel
       
       // Append image if uploaded, otherwise send empty string
-      // ইমেজ আপলোড করলে পাঠানো হবে, না করলে খালি স্ট্রিং পাঠানো হবে
-      data.append("image", formData.image || "");
+      if (formData.image) {
+        data.append("image", formData.image);
+      }
 
-      // API call
-      const response = await signupUser(data);
-      console.log(response.data.client); // response থেকে client data
-      alert(response.data.message);
+      // API call with CSRF protection (handled by auth.signup)
+      const response = await auth.signup(data);
+      console.log('Signup success:', response.data);
+      alert(response.data.message || 'Signup successful!');
 
       // Redirect to login after success
       navigate("/login");
     } catch (error) {
-      console.error(error.response?.data || error.message);
+      console.error('Signup failed:', error.response?.data || error.message);
       if (error.response?.data?.message) {
         alert(error.response.data.message);
+      } else if (error.response?.data?.errors) {
+        const errors = Object.values(error.response.data.errors).flat().join('\n');
+        alert(errors);
       } else {
-        alert("Signup failed!");
+        alert(error.message || "Signup failed!");
       }
     }
   };
@@ -127,10 +132,12 @@ function Signup() {
 
           <input
             type="password"
-            name="confirmPassword"
+            name="password_confirmation"
             placeholder="Confirm Password"
+            value={formData.password_confirmation}
             onChange={handleChange}
             required
+            minLength={6}
           />
 
           <button type="submit" className="signup-btn">

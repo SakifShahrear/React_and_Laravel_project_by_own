@@ -34,20 +34,41 @@ export default function Profile() {
   // Fetch user profile data from API on component mount
   // কম্পোনেন্ট মাউন্ট হলে API থেকে ইউজার প্রোফাইল ডেটা আনা
   useEffect(() => {
-  api.get("/profile")
-    .then((res) => setUser(res.data))
-    .catch((err) => {
-      console.log(err);
-      // যদি 401 হয় → interceptor handle করবে
-    });
-}, []);
+    console.log('🔍 Fetching profile...');
+    api.get("/api/user")
+      .then((res) => {
+        console.log('✅ Profile response:', res);
+        console.log('✅ Profile data:', res.data);
+        
+        // Check if data is nested (e.g., res.data.user or res.data.client)
+        const userData = res.data.user || res.data.client || res.data;
+        console.log('✅ Setting user:', userData);
+        setUser(userData);
+      })
+      .catch((err) => {
+        console.error('❌ Profile fetch error:', err);
+        console.error('❌ Error response:', err.response);
+        console.error('❌ Error data:', err.response?.data);
+        
+        // If 401, redirect to login
+        if (err.response?.status === 401) {
+          alert('Session expired. Please login again.');
+          navigate('/login');
+        }
+      });
+  }, [navigate]);
 
   // Load notes from API on component mount
   // কম্পোনেন্ট মাউন্ট হলে API থেকে নোট লোড করা
   useEffect(() => {
-    api.get("/notes")
-      .then((res) => setNotes(res.data.notes))
-      .catch((err) => console.log(err));
+    api.get("/api/notes")
+      .then((res) => {
+        console.log('✅ Notes data:', res.data);
+        setNotes(res.data.notes || res.data);
+      })
+      .catch((err) => {
+        console.error('❌ Notes fetch error:', err.response?.data || err.message);
+      });
   }, []);
 
   // Filter notes based on search query (title or date)
@@ -80,12 +101,13 @@ export default function Profile() {
   const deleteNote = async (noteId) => {
     if (window.confirm("Are you sure you want to delete this note?")) {
       try {
-        await api.delete(`/notes/${noteId}`);
+        await api.delete(`/api/notes/${noteId}`);
         // Refresh notes
-        const res = await api.get("/notes");
-        setNotes(res.data.notes);
+        const res = await api.get("/api/notes");
+        setNotes(res.data.notes || res.data);
+        alert("Note deleted successfully!");
       } catch (err) {
-        console.log(err);
+        console.error('Delete error:', err.response?.data || err.message);
         alert("Failed to delete note");
       }
     }
@@ -94,13 +116,20 @@ export default function Profile() {
   // Logout function - clear token and redirect to login
   // লগ আউট ফাংশন - টোকেন মুছে লগইন পেজে পাঠানো
   
-  const handleLogout = () => {
-  if (window.confirm("Are you sure you want to logout?")) {
-    localStorage.removeItem("access_token");   // Access token remove
-    localStorage.removeItem("refresh_token");  // Refresh token remove
-    navigate("/login");                         // Redirect to login page
-  }
-};
+  const handleLogout = async () => {
+    if (window.confirm("Are you sure you want to logout?")) {
+      try {
+        // Use the logout function from api.js (includes CSRF token)
+        const { logout } = await import('../api');
+        await logout();
+      } catch (error) {
+        console.error('Logout error:', error);
+        // Fallback: clear local storage and redirect
+        localStorage.clear();
+        navigate("/login");
+      }
+    }
+  };
 
   return (
     <div className="profile-screen">

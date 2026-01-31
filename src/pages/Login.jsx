@@ -1,11 +1,8 @@
 // Import necessary hooks and utilities
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../api";
 import "../css/Login.css";
-
-// API Base URL - Using Vite proxy
-const API_URL = '/api';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -19,23 +16,10 @@ export default function Login() {
   // Handle login form submission
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    
     try {
-      const response = await axios.post(
-        `${API_URL}/login`,
-        {
-          email: form.email,
-          password: form.password
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
-        }
-      );
-
-      console.log('✅ Login Success:', response.data);
+      const response = await auth.login(form.email, form.password);
+      console.log('Login success:', response.data);
       
       // Save the tokens
       localStorage.setItem('access_token', response.data.access_token);
@@ -47,20 +31,8 @@ export default function Login() {
       navigate('/profile');
       
     } catch (error) {
-      console.error('❌ Login Error:', error);
-      
-      if (error.response) {
-        // Server responded with error
-        console.log('Error response:', error.response.data);
-        alert(error.response.data.message || 'Login failed');
-      } else if (error.request) {
-        // Request made but no response
-        console.log('No response received');
-        alert('Cannot connect to server. Please check if Apache is running.');
-      } else {
-        console.log('Error:', error.message);
-        alert('Login failed. Please try again.');
-      }
+      console.error('Login failed:', error.response?.data);
+      alert(error.response?.data?.message || 'Login failed');
     }
   };
   return (
